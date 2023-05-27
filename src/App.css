@@ -1,0 +1,16 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.blogs {
+  display: grid;
+  grid-template-columns: repeat(3, 345px);
+  gap: 32px;
+}
+main {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 50px;
+}
