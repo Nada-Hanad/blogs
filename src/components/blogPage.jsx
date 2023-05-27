@@ -14,7 +14,7 @@ export default function BlogPage() {
       url: "https://blogsapi.p.rapidapi.com/",
       params: { id: blogId },
       headers: {
-        "X-RapidAPI-Key": "84b7611102msh29f188dad3e2aa6p194b7bjsn0382c9775801",
+        "X-RapidAPI-Key": "YOUR_API_KEY",
         "X-RapidAPI-Host": "blogsapi.p.rapidapi.com",
       },
     };

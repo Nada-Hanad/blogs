@@ -17,7 +17,7 @@ function App() {
         ordering: "-date_published",
       },
       headers: {
-        "X-RapidAPI-Key": "8f03c4347emshf6594e905d4ec9bp18b5efjsn097c9da1eb4e",
+        "X-RapidAPI-Key": "YOUR_API_KEY",
         "X-RapidAPI-Host": "blogsapi.p.rapidapi.com",
       },
     };
@@ -36,7 +36,7 @@ function App() {
       method: "GET",
       url: "https://blogsapi.p.rapidapi.com/categories/",
       headers: {
-        "X-RapidAPI-Key": "8f03c4347emshf6594e905d4ec9bp18b5efjsn097c9da1eb4e",
+        "X-RapidAPI-Key": "YOUR_API_KEY",
         "X-RapidAPI-Host": "blogsapi.p.rapidapi.com",
       },
     };
@@ -61,8 +61,7 @@ function App() {
         url: "https://blogsapi.p.rapidapi.com/",
         params: { category: event.target.value },
         headers: {
-          "X-RapidAPI-Key":
-            "8f03c4347emshf6594e905d4ec9bp18b5efjsn097c9da1eb4e",
+          "X-RapidAPI-Key": "YOUR_API_KEY",
           "X-RapidAPI-Host": "blogsapi.p.rapidapi.com",
         },
       };
