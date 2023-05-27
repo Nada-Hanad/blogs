@@ -2,34 +2,111 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import MediaCard from "./components/blogCard";
 import axios from "axios";
+import { CircularProgress } from "@mui/material";
 
 function App() {
   const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [error, setError] = useState("");
+  function fetchAllBlogs() {
+    const options = {
+      method: "GET",
+      url: "https://blogsapi.p.rapidapi.com/",
+      params: {
+        ordering: "-date_published",
+      },
+      headers: {
+        "X-RapidAPI-Key": "8f03c4347emshf6594e905d4ec9bp18b5efjsn097c9da1eb4e",
+        "X-RapidAPI-Host": "blogsapi.p.rapidapi.com",
+      },
+    };
+    axios
+      .request(options)
+      .then((res) => {
+        setBlogs(res.data.results);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
 
-  const options = {
-    method: "GET",
-    url: "https://blogsapi.p.rapidapi.com/",
-    params: {
-      ordering: "-date_published",
-    },
-    headers: {
-      "X-RapidAPI-Key": "c975bf37b4msh1f233832d20478bp12b97bjsn747e557d11d9",
-      "X-RapidAPI-Host": "blogsapi.p.rapidapi.com",
-    },
-  };
-
-  useEffect(() => {
+  function getAllCategories() {
+    const options = {
+      method: "GET",
+      url: "https://blogsapi.p.rapidapi.com/categories/",
+      headers: {
+        "X-RapidAPI-Key": "8f03c4347emshf6594e905d4ec9bp18b5efjsn097c9da1eb4e",
+        "X-RapidAPI-Host": "blogsapi.p.rapidapi.com",
+      },
+    };
     axios.request(options).then((res) => {
-      setBlogs(res.data.results);
+      let cats = res.data.map((e) => {
+        return {
+          title: e.title,
+          id: e.id,
+        };
+      });
+      setCategories(cats);
     });
+  }
+  function handleChange(event) {
+    setLoading(true);
+    setError("");
+    if (event.target.value == "all") {
+      fetchAllBlogs();
+    } else {
+      const options = {
+        method: "GET",
+        url: "https://blogsapi.p.rapidapi.com/",
+        params: { category: event.target.value },
+        headers: {
+          "X-RapidAPI-Key":
+            "8f03c4347emshf6594e905d4ec9bp18b5efjsn097c9da1eb4e",
+          "X-RapidAPI-Host": "blogsapi.p.rapidapi.com",
+        },
+      };
+      axios
+        .request(options)
+        .then((res) => {
+          if (res.data.results.length === 0) {
+            setError("No blogs found in this category");
+          } else {
+            setBlogs(res.data.results);
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }
+  useEffect(() => {
+    fetchAllBlogs();
+    getAllCategories();
   }, []);
   return (
     <main>
-      <div className="blogs">
-        {blogs.map((e) => {
-          return <MediaCard key={e.id} blog={e} />;
+      <select onChange={handleChange}>
+        <option value="all">All</option>
+        {categories.map((e) => {
+          return (
+            <option key={e.id} value={e.id}>
+              {e.title}
+            </option>
+          );
         })}
-      </div>
+      </select>
+      {loading ? (
+        <CircularProgress />
+      ) : error !== "" ? (
+        <h2>{error}</h2>
+      ) : (
+        <div className="blogs">
+          {blogs.map((e) => {
+            return <MediaCard key={e.id} blog={e} />;
+          })}
+        </div>
+      )}
     </main>
   );
 }

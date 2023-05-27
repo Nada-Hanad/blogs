@@ -14,3 +14,10 @@ main {
   place-items: center;
   padding: 50px;
 }
+select {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  padding: 8px;
+  border-radius: 8px;
+}
